@@ -23,7 +23,9 @@ file '/etc/chef/client.d/etckeeper-handler.rb' do
   action :delete
 end
 
-directory node['etckeeper']['handler_path']
+directory node['etckeeper']['handler_path'] do
+  recursive true
+end
 
 file_handler = ::File.join(node['etckeeper']['handler_path'], 'etckeeper_handler.rb')
 
@@ -38,8 +40,4 @@ chef_handler 'Etckeeper::CommitHandler' do
   type report: true, exception: true
 end
 
-chef_handler 'Etckeeper::StartHandler' do
-  source file_handler
-  action :enable
-  type start: true
-end
+package 'htop'
