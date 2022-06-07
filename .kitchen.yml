@@ -36,7 +36,15 @@ platforms:
 suites:
 - name: default
   run_list:
-  - "recipe[etckeeper::commit]"
   - "recipe[etckeeper]"
+  - "recipe[etckeeper::commit]"
   attributes:
     fqdn: etckeeper.example.com
+    etckeeper:
+      handler_path: '/var/tmp'
+  lifecycle:
+    pre_create:
+      - podman create --name chef-latest --replace docker.io/chef/chef:latest sh
+      - podman start chef-latest
+    post_destroy:
+      - podman volume prune -f
