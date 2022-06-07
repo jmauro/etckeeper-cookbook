@@ -5,11 +5,15 @@ driver:
 
 transport:
   name: dokken
+  login_command: podman
 
 provisioner:
   name: dokken
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
   chef_license: accept-no-persist
+  enforce_idempotency: true
+  multiple_converge: 2
+  log_level: :info
 
 platforms:
   - name: debian-10
